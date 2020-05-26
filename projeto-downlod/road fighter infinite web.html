@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Fighter</title>
+    <style>
+        body{
+            overflow: hidden;
+            overflow-y: none;
+            background-color: black;
+        }
+        #pista{
+            width: 230px;
+            border:1px solid black;
+            margin: 0px auto 0px auto;
+            background-image: url(" https://uotuhw.dm.files.1drv.com/y4mkF87Em0m_GNadSl9aMar33BRZiU4jPvK4yjfnu9b9_372XsDKvnw8NbOrIOhMiWAxnOrAPJNwpt_i7JqSl94Y8Q0GsU8J6QUGl5n9j6NIt2F84hgDG6G6ordwew8td2zaykJy4YD3JC1nh0-6bz-67UE0bPJADQKE_q9aJOmIWPPEqfSdoZS7aR0CX4wLI43BS_pw866zs9wskcjYPE1dA?width=162&height=240&cropmode=none");
+        }
+        #carro{
+            z-index: 2;
+            width: 75px;
+            height: 28px;
+            margin-top: 200%;
+            margin-left: 72px;
+            background-image: url("https://uot5hw.dm.files.1drv.com/y4mWY--DUSgzKWg51mlm4VlTGikipIwVTY85VO6i3qUVGLR9zr4tQsBdEu_xiyDmh19CBJIU7-oJyxJ8nkANr7W8FcmFURlM5UJQUXuSTnRyBViwXkYhOQ1aur0KLA4QIjDR590UTJOpw2OjWrC0Q7GuuC4UcYdEZ1H5uHRCRhIcyb1SI5nE_Cd_YItMYXl--K_jtSgTPp254OvtZABBYquHg?width=17&height=28&cropmode=none");
+            background-repeat: no-repeat;
+            background-position-x: 28.5px;
+        }
+        .inimigos{
+            z-index: 1;
+            width: 75px;
+            height: 50px; 
+            position: absolute;
+            top: 0px;
+            margin-left: 72px;
+        }
+        #pontos{
+            position: absolute;
+            top: 200px;
+            left: 738px;
+            width: 52px;
+            height: 40px;
+            background-color: rgb(64, 0, 128);
+            padding-left: 1px;
+            display: none;
+        }
+        #pontos img{
+            display: inline-block;
+            width: 12px;
+            height: 14px;
+            margin-top: 2px;
+        }
+        #pontos div{
+            margin-left: 0px;
+        }
+        #highscores{
+            position: fixed;
+            top: 220px;
+            left: 600px;
+            width: 160px;
+            height: 150px;
+            background-color: black;
+            color: white;
+        }
+        #highscores table{
+            margin: 20px auto auto auto;
+        }
+        #highscores td{
+            padding-bottom: 1px;
+        }
+        #highscores input{
+            text-align: center;
+            background-color: black;
+            color: white;
+            border: none;
+        }
+        #highscores input:focus{
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+        #highscores table caption{
+            margin-top:-3px;
+            margin-bottom: 3px;
+        }
+        #highscores table p{
+            margin-top: -1px;
+            margin-bottom: 2px;
+        }
+        #reiniciar{
+            margin-top: 0px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button{
+            width: 60px;
+            position: absolute;
+            top: 300px;
+            left: 646px;
+            border: none;
+            color: white;
+            background-color: red;
+            cursor: pointer;
+        }
+        #touchLeft, #touchRight{
+            position: fixed;
+            top:0px;
+            height: 100%;
+            width: 120px;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0);
+        }
+        #tocuhLeft{
+            left: 0px;
+        }
+        #touchRight{
+            right: 0px;
+        }
+        #instrucoes{
+            width: 230px;
+            height: 40px;
+            position: fixed;
+            top: 260px;
+            left: 568px;
+            background-color: black;
+            color: white;
+            font-family: Arial;
+            font-size: 11pt;
+            text-align: justify;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+    <span id="instrucoes">Aperte seta di&shy;rei&shy;ta ou se&shy;ta es&shy;quer&shy;da para mo&shy;ver o carro.</span>
+    <button id="button">Jogar</button>
+    <div id="pista">
+       <div id="carro"></div>
+    </div>
+    <div id="pontos"><img><img><img><img><div id="coracoes"><img class="hearts" src="https://uot0hw.dm.files.1drv.com/y4m7lE5NO7roECgP-fnXHohEsh6tEOMedWBQsIaxqLBRByCdq0aQRVtSRXraI-fel_eck9vrkB-c-4gtDynzqcR7flaMxN5jUkszcEtbrSySfu3HoSTw5WCnkaPjbhgE5T5L1eOOgHy_ImnzvqhyaHqRLwltjbnbVJCcs052pNj37q7i0lDZt05_ZMuXMwhsi98jyjUA8iqxMCcHFXHJTma9w?width=15&height=18&cropmode=none"><img class="hearts" src="https://uot0hw.dm.files.1drv.com/y4m7lE5NO7roECgP-fnXHohEsh6tEOMedWBQsIaxqLBRByCdq0aQRVtSRXraI-fel_eck9vrkB-c-4gtDynzqcR7flaMxN5jUkszcEtbrSySfu3HoSTw5WCnkaPjbhgE5T5L1eOOgHy_ImnzvqhyaHqRLwltjbnbVJCcs052pNj37q7i0lDZt05_ZMuXMwhsi98jyjUA8iqxMCcHFXHJTma9w?width=15&height=18&cropmode=none"><img class="hearts" src="https://uot0hw.dm.files.1drv.com/y4m7lE5NO7roECgP-fnXHohEsh6tEOMedWBQsIaxqLBRByCdq0aQRVtSRXraI-fel_eck9vrkB-c-4gtDynzqcR7flaMxN5jUkszcEtbrSySfu3HoSTw5WCnkaPjbhgE5T5L1eOOgHy_ImnzvqhyaHqRLwltjbnbVJCcs052pNj37q7i0lDZt05_ZMuXMwhsi98jyjUA8iqxMCcHFXHJTma9w?width=15&height=18&cropmode=none"><img class="hearts" src="https://uot0hw.dm.files.1drv.com/y4m7lE5NO7roECgP-fnXHohEsh6tEOMedWBQsIaxqLBRByCdq0aQRVtSRXraI-fel_eck9vrkB-c-4gtDynzqcR7flaMxN5jUkszcEtbrSySfu3HoSTw5WCnkaPjbhgE5T5L1eOOgHy_ImnzvqhyaHqRLwltjbnbVJCcs052pNj37q7i0lDZt05_ZMuXMwhsi98jyjUA8iqxMCcHFXHJTma9w?width=15&height=18&cropmode=none"></div></div>
+    <div id="highscores">
+        <table>
+            <caption> Highscores</caption>
+        <tr>
+            <td><input type="text" maxlength="8" size="5" placeholder="Seu nome" class="primeiro"></td>
+            <td class="tdp"><p>------</p></td>
+            <td><p class="primeiro">0000</p></td>
+        </tr>
+        <tr>
+            <td><input type="text" maxlength="8" size="5" placeholder="Seu nome" class="segundo"></td>
+            <td class="tdp"><p>------</p></td>
+            <td><p class="segundo">0000</p></td>
+        </tr>
+        <tr>
+            <td><input type="text" maxlength="8" size="5" placeholder="Seu nome" class="terceiro"></td>
+            <td class="tdp"><p>------</p></td>
+            <td><p class="terceiro">0000</p></td>
+        </tr>
+        </table>
+        <p id="reiniciar">Aperte espaço p/reiniciar</p>
+    </div>
+    <div id="touchLeft"></div><div id="touchRight"></div>
+</body>
+<script>
+    var obj = {
+        pontos : document.querySelector("#pontos"),
+        highscores : document.querySelector("#highscores"),
+        pista : document.querySelector("#pista"),
+        carro : document.querySelector("#carro"),
+        hearts : document.getElementsByClassName("hearts"),
+        reiniciar : document.querySelector("#reiniciar"),
+        play : document.querySelector("#button"),
+        touchLeft : document.querySelector("#touchLeft"),
+        touchRight : document.querySelector("#touchRight"),
+        instrucoes : document.querySelector("#instrucoes")
+    }
+    var PosicoesObj = {
+        pistaH : function(){
+            if (Mobile){
+                return 568 + "px"
+            }else{
+                return (window.innerHeight-20) + "px" 
+            }  
+        },
+        pontosL : function(){
+            if (Mobile){
+                return ((window.innerWidth - 230/2)-13) + "px"
+            }else{
+                return (((window.innerWidth - 230)/2) + (230/2) + 52) + "px"
+            } 
+        },
+        pontosT : function(){
+            return window.innerHeight/3.3 + 'px'
+        },
+        carroMT : function(){
+            return window.innerHeight/1.425 + "px"
+        },
+        highscoresT : function(){
+            return (window.innerHeight/3.3)-10 + "px"
+        },
+        highscoresL : function(){
+            if(Mobile){
+                obj.highscores.style.height = 170 + "px"
+                return (((window.innerWidth - 230)/2)+35) + "px"
+            }else{
+                return (((window.innerWidth - 230)/2) + (230/2) - 75) + "px"
+            }  
+        },
+        playBtn: function(){
+            return (obj.pista.offsetLeft + 230/2 - 36) + "px"
+        },
+        instrucoesL: function(){
+            return (PosicoesObj.playBtn().split("px")[0] - 78) + "px"
+        }
+
+    }
+    var Mobile = false
+    const Inimigos = ["url('https://tpt5hw.dm.files.1drv.com/y4mRllmdkBM38Nj9mcYVl9q0RC6KhdKELEMVBiADOWiDLnaqfechTogq7LS2MI2NmmhTIjiE60ow1s-XpVD7kpQbqcReWEycz8pXLMgb8uY2_gFN1B2wedb_A77pAEwloG8qmR5H3Wsspdiz5bC3WeT7qxn0FyM-wgVq9ijfqekDnXdpoyDyckO7xQamv5BpFIl7YIEsY_yFbDfC2QF3q3KPg?width=16&height=26&cropmode=none')", "url('https://tpt4hw.dm.files.1drv.com/y4meekdM2Pw43-DHtbgMvuZ4aFH1p3Zc1zgcLitN97R_xB3T6ymxGbgaa29P8Ux-SOsa4vGBS_OxizIYJ2jWzhbi1bUK3o-4Cw2o_r0TkecqOCC7bd-RE7eB0EX3BcLcc2WrVTHrQIaADjYWJ1cbtEJdpYamd2fwjWRo5txMmIOC9Bwo_IKsGOi-7Cyw9pshhj4EOs-q3AbTIN4OAfp_3kCKw?width=17&height=23&cropmode=none')", "url('https://tpt2hw.dm.files.1drv.com/y4mx6GQpq0cM7ibNCQpXtZO2s4FFtQoLJyNBlfQW5cAFFFYOtKqoE-M_uweB9i5pKpYPmvldi3FjhfOAMWQVTw2fo6Vr8J5gsHbkXs5rmgGH2LuvnX5m-C-8KVuZXbyDypnQ0qTM9SDxD_30dpRN-SGYtKgKExivOrvQpUg3PV0MjsDylhC9_OuUZ0z7A7FEit_q7v7T_udNVcASt6ls4_uMA?width=15&height=24&cropmode=none')", "url('https://vpustw.dm.files.1drv.com/y4mLCJPTR557_Xic7Lhnw3d-WjZHfyhcOmV2z3KK3v0wJ1Sl4yvQypOE6FHFm1fUGQOzpftoPJHqJeYmaf0bxtGSDDsj1xG3-NKa6wsRou5yv2dTIn-1Zk9hg8absIdXA3_bGty4Pn3pIeqPSKqpaQ-KnQpIf_7t8rsl3GISEXSODdx4VDAxDbpLim5b-oI36gU_ku3RKW66GvTYq-kEmEw1w?width=16&height=24&cropmode=none')", "url('https://vpurtw.dm.files.1drv.com/y4mDF0zEnQu1RyNe1Kj5ThpS-B29jM7-0GDuHVKeC0TZpeAcGKGc6sG4vFW301kO3Ir7XOMONrAHQImITu32BjQJ1b95eiI3BBP1MdugIV0dw6Y6UtLy9B98ff5hsG3PNahFRSH_9u9CfcV10GQT2kJ5vtmmEE7KWOkjJW8zYyp4M0gGxMH3m5Sml1F63z9CdMIrZpafmZqqpjFkLoG7oroCA?width=17&height=23&cropmode=none')", "url('https://vpuxtw.dm.files.1drv.com/y4msY41eqL-tXfjMXMfFY40oazA1nU4vkKTceTXY_ZxvON-DJ7K6YrfPMcUTUZotS4VeAtcC7TU6efZ4fVn_1QMWGTH6Rgp0WuZ2hhQ-sfz9RPGFEYzaylcYpgq32Eke97dGGOMRBcOYnd4eBO-qu5jDXq2HOxVtQi1kPIvfndW_6bo11smi3McZ2doDbH6nBO0yPyzUrX8e6XdBPK9Z_yN-Q?width=17&height=30&cropmode=none')", "url('https://vpuvtw.dm.files.1drv.com/y4mn0Ongnkgo31-uTfj7RP4LF_ah2cCGK656T33bg5Bq0VWemw5-yKJ7uBlgWA1jPPdMtHYTJg_c0CrcY8xtCX-wnjE8lpwJdokifP9x8A1MzZY_RnD6wwUJ5YFGWnIhOgw1hpPwxCx1Il8Oh33H3tx7IJFbtkzrVksSj9F0p5L0YhwkboZgF4MAQCV_EKeq3i6rtNRO1-kUzOHpMQOMmw4Lg?width=18&height=25&cropmode=none')", "url('https://vpuytw.dm.files.1drv.com/y4mDGV3XXMUy8Ccmvh7qhAWg0JmkJ_jOzwZjjAcI2-zaZ7OW2P4sTFXe7v2yOpuRlIQTbT1p_lPeMzyC5CEEXWTvcKaUTH3kbbQ4VQSca-VpyiufIQebrkWCNqYlmkfy0fFbtg8AN99V98buaJrmz5jrqemIYOuAZAmd5hxO-98GpGEj70pD_SuSztasBoA1DYz4q1dpEuxkqZqv8hQN78_Dw?width=15&height=24&cropmode=none')", "url('https://uot2hw.dm.files.1drv.com/y4m3NSLP7hd6lo6WxKH9zMd1ggX21FGEeSl6z6JMB4EbbnYTFuAxdBMl1KFSG7TV_8hBdfry7gpVP9LHpgahddcaTR8rnHURfNr9FWwAEDunS5OOkbXHNa-wxavXVjmx_vIczLuZ1T8qqXV5Bb_5SUjNzXenZkJrKzT0inE-UfO9cDVxc8BRa2tTIcSGXqpVfPE7n8m6fo7fMFxfCFaWVFPkA?width=22&height=50&cropmode=none')"]
+    const vel = 3.5, velInimigos = 5, velCarro = 2;
+    var frames;
+    var pxIniCarro = 28.5, pyInicaCarro, pxCarro = pxIniCarro, pyCarro, dir = 0, py = 0;
+    var game = false
+    var l, h;
+    const segundos = 400
+    var pontos = 0
+    var interval_cria_inimigo;
+    var acabouvidas, Aperte_Espaco, todosEnimigos, animarExplosao, indica, removerExplosao, PiscarCarro;
+    var vidas;
+    var identificarPiscada = 0, removerPiscada
+    var i = false
+    
+    function addEventos(){
+        if(obj.play){ // Só na primeira vez que inicia o jogo
+            obj.play.addEventListener("click", function(){
+                interval_cria_inimigo = setInterval(criarInimigos, segundos)
+                obj.pontos.style.display = "block"
+                game = true
+                obj.instrucoes.remove()
+                delete obj.instrucoes
+                obj.play.remove()
+                delete obj.play
+                MainGame()
+            })
+        }
+        obj.touchLeft.addEventListener("touchstart", function(){
+        teclaDW(1)})
+        obj.touchLeft.addEventListener("touchend", function(){
+        teclaUP(true)
+        })
+        obj.touchRight.addEventListener("touchstart", function(){
+            teclaDW(2)
+        })
+        obj.touchRight.addEventListener("touchend",function(){
+            teclaUP(true)
+        })
+        if (!Mobile){
+            document.addEventListener("keydown", teclaDW)
+            document.addEventListener("keyup", teclaUP)
+        }
+    }
+    function teclaDW(value){
+        if ( value == 1 || event.keyCode == 37){
+            dir = -1
+        }
+        if (value == 2 || event.keyCode == 39){
+            dir = 1
+        }
+    }
+    function teclaUP(touchEnd){
+        if (event.keyCode == 37 || event.keyCode == 39 || touchEnd == true){
+            dir = 0
+        }
+    }
+
+    function MainGame(){
+        if (document.hasFocus()){
+            moverpista()
+            moverCarro()
+            moverInimigos()
+        }
+        if(game){
+        frames = requestAnimationFrame(MainGame)
+        }
+    }
+
+    function moverCarro(){
+        pxCarro += velCarro*dir
+        if(pxCarro < 0 || pxCarro > 60){
+            pxCarro += velCarro*dir*-1
+        }
+        obj.carro.style.backgroundPosition = pxCarro + "px"
+    }
+
+    function criarInimigos(){
+        if (document.hasFocus()){
+            const e = document.createElement("div")
+            const att1 = document.createAttribute("class")
+            const att2 = document.createAttribute("style")
+            att1.value = "inimigos"
+            let sortInimigo = Math.round(Math.random()*(Inimigos.length-1))
+            let tamanhoVeiculo = DefinirTamanhoInimigo(sortInimigo) 
+            let sortPx = Math.round(Math.random()*(71-tamanhoVeiculo))
+            att2.value = "background-image:" + Inimigos[sortInimigo] + "; background-repeat: no-repeat; background-position:" + sortPx + "px;"
+            e.setAttributeNode(att2)
+            e.setAttributeNode(att1)
+            obj.pista.appendChild(e)
+            todosEnimigos = document.getElementsByClassName("inimigos")
+        }    
+    }
+
+    function moverInimigos(){
+        if (todosEnimigos){
+            for (let c = 0; c < todosEnimigos.length; c++){
+                if (todosEnimigos[c]){
+                    var top = todosEnimigos[c].offsetTop
+                    top += velInimigos
+                    todosEnimigos[c].style.top = top + "px"
+                    colisao(todosEnimigos[c])
+                    if ((top > window.innerHeight) || (window.innerHeight <= 588 && top > 540 )){
+                        todosEnimigos[c].remove()
+                    }
+                }
+            }
+        }
+    }
+
+    function colisao(Enimigo){
+        let urlBackground = Enimigo.style.backgroundImage
+        let formatarUrl = String(urlBackground)
+        formatarUrl = String (formatarUrl.slice(38, 70))
+        DefinirAlturaInimigo(formatarUrl)
+        AproximarInimigo(formatarUrl, Enimigo)
+        for (var c = 0; c < Inimigos.length; c++){
+            if (Inimigos[c].match(formatarUrl)){
+               l =  DefinirTamanhoInimigo(c)
+            }
+        }
+        var BackX = Enimigo.style.backgroundPositionX.split("px")
+        var EnemyBackgroundX = Number(BackX[0])
+        if(((Enimigo.offsetTop+h >= pyCarro && (Enimigo.offsetTop < pyCarro)) // frente enimigo e frente jogador
+        && ((EnemyBackgroundX + l >= pxCarro) && (EnemyBackgroundX <= pxCarro + 13)))){
+            h = 0
+            clearInterval(interval_cria_inimigo)
+            indica = 2
+            carro.style.zIndex = 10
+            carro.style.backgroundImage = "url('https://uotzhw.dm.files.1drv.com/y4mCDf12mjWWp3uh5_BWENJDyqpdjeIjp1819dYwi6wLIBeWMNh7V94aXwAokd_CaDE3k5MROf2pR91BynE4_EQ4QrpilC0p6GFNeygQXut_xhRdJraMIlpTyycBUPN-iJDL4GacnhphaHOhrPYVWlV0u3GRO2EsMSYmzgep4frAMAi2INAOCEGjX9135eXX0Xat64cm2lRWwbrN8Z2lNwYlw?width=12&height=13&cropmode=none')"
+            animarExplosao = setInterval(mudarFrame, 200 )
+            removerExplosao = setInterval(Excluir_Explosao, 1000)
+            game = false
+            obj.hearts[vidas].remove()
+            vidas--
+        }else if (Enimigo.offsetTop + h >= pyCarro && Enimigo.offsetTop + h < pyCarro + 26){
+            calcPontos()
+        }
+    }
+
+    function DefinirAlturaInimigo(url){
+        if (Inimigos[7].match(url) || Inimigos[3].match(url) || Inimigos[2].match(url)){
+            h = 25
+        }else if (Inimigos[1].match(url) || Inimigos[4].match(url)){
+            h = 27
+        }else if (Inimigos[0].match(url) || Inimigos[6].match(url)){
+            h = 26
+        }else if (Inimigos[5].match(url)){
+            h = 31
+        }else if (Inimigos[8].match(url)){
+            h = 40
+        }
+    }
+
+    function AproximarInimigo(urlInimigo, Inimigo){
+        let pxInimigo;
+        if((Inimigos[3].match(urlInimigo) || Inimigos[4].match(urlInimigo)) && (pyCarro - (Inimigo.offsetTop + h) <= 200) && (pyCarro - (Inimigo.offsetTop + h) >= 100)){
+            pxInimigo = (Inimigo.style.backgroundPositionX.split("px"))
+            if (pxCarro > pxInimigo[0]){
+                pxInimigo[0] ++
+            }else if (pxCarro  < pxInimigo[0]){
+                pxInimigo[0] --
+            }
+            Inimigo.style.backgroundPositionX = pxInimigo[0] + "px"
+        }
+    }
+
+    function DefinirTamanhoInimigo(NumEnemy){
+        if (NumEnemy == 6){ // Amarelo Maior
+            return 12
+        }else if (NumEnemy == (8)){// caminhao
+            return 16
+        }else{
+            return 11
+        }
+    }
+
+    function Excluir_Explosao(){
+        clearInterval(animarExplosao)
+        clearInterval(removerExplosao)
+        todosEnimigos = document.getElementsByClassName("inimigos")
+        do{
+            todosEnimigos[0].remove()
+        }while(todosEnimigos[0])
+        resetarCarro()
+    }
+
+    function resetarCarro(){
+        pxCarro = pxIniCarro
+        obj.carro.style.backgroundImage = "url('https://uot5hw.dm.files.1drv.com/y4mWY--DUSgzKWg51mlm4VlTGikipIwVTY85VO6i3qUVGLR9zr4tQsBdEu_xiyDmh19CBJIU7-oJyxJ8nkANr7W8FcmFURlM5UJQUXuSTnRyBViwXkYhOQ1aur0KLA4QIjDR590UTJOpw2OjWrC0Q7GuuC4UcYdEZ1H5uHRCRhIcyb1SI5nE_Cd_YItMYXl--K_jtSgTPp254OvtZABBYquHg?width=17&height=28&cropmode=none')"
+        obj.carro.style.backgroundPositionX = pxIniCarro + "px"
+        PiscarCarro = setInterval(PisacarCarro, 200)
+        removerPiscada = setInterval(RetomarGame, 1200)
+    }
+    function RetomarGame(){
+        clearInterval(PiscarCarro)
+        clearInterval(removerPiscada)
+        obj.carro.style.display = "block"
+        if(vidas >= 0){
+            game = true
+            MainGame()
+            interval_cria_inimigo = setInterval(criarInimigos, segundos)
+        }else{
+            Aperte_Espaco = setInterval(piscarLetra, 200)
+            acabouvidas = true
+            obj.pontos.style.display = "none"
+            VerificarHighscores()
+            obj.highscores.hidden = true
+        }   
+
+    }
+
+    function VerificarHighscores(){
+        var PtsTotal = Math.round(pontos)
+        var primeiro = document.getElementsByClassName("primeiro") // 0 é o input -- 1 o valor
+        var segundo = document.getElementsByClassName("segundo")
+        var terceiro = document.getElementsByClassName("terceiro")
+        var posiçao;
+        escreverPontosJaSalvos(primeiro, segundo, terceiro)
+        var valor1 = Number(primeiro[1].innerHTML)
+        var valor2 = Number(segundo[1].innerHTML)
+        var valor3 = Number(terceiro[1].innerHTML)
+        obj.highscores.style.display = "block"
+        if(PtsTotal > valor1){
+            primeiro[0].focus()
+            primeiro[0].value = ""
+            primeiro[0].readOnly = false
+            segundo[0].readOnly = true
+            terceiro[0].readOnly = true
+            posiçao = 1
+            primeiro[0].addEventListener("change", function(){escreverNome(primeiro[0], PtsTotal, posiçao)})
+            if (localStorage.Nome2){
+                terceiro[0].value = localStorage.Nome2
+                localStorage.Pontos3 = localStorage.Pontos2
+                localStorage.Nome3 = localStorage.Nome2 
+            }
+            if(localStorage.Nome1){
+                segundo[0].value = localStorage.Nome1
+                localStorage.Nome2 = localStorage.Nome1
+                localStorage.Pontos2 = localStorage.Pontos1
+            }
+            terceiro[1].innerHTML = valor2
+            segundo[1].innerHTML = valor1
+            primeiro[1].innerHTML = PtsTotal
+            valor3 = valor2
+            valor2 = valor1
+            valor1 = PtsTotal
+        }else if (PtsTotal > valor2){
+            segundo[0].focus()
+            segundo[0].value = ""
+            segundo[0].readOnly = false
+            primeiro[0].readOnly = true
+            terceiro[0].readOnly = true
+            posiçao = 2
+            segundo[0].addEventListener("change", function(){escreverNome(segundo[0], PtsTotal, posiçao)})
+            if (localStorage.Nome2){
+                terceiro[0].value = localStorage.Nome2
+                localStorage.Pontos3 = localStorage.Pontos2
+                localStorage.Nome3 = localStorage.Nome2
+            }
+            terceiro[1].innerHTML = valor2
+            segundo[1].innerHTML = PtsTotal
+            valor3 = valor2
+            valor2 = PtsTotal
+        }else if (PtsTotal > valor3){
+            terceiro[0].focus()
+            terceiro[0].value = ""
+            segundo[0].readOnly = true
+            primeiro[0].readOnly = true
+            terceiro[0].readOnly = false
+            posiçao = 3
+            terceiro[0].addEventListener("change",function(){escreverNome(terceiro[0], PtsTotal, posiçao)})
+            terceiro[1].innerHTML = PtsTotal
+            valor3 = PtsTotal
+        }else{
+            escreverNome(null, null, null)
+        }
+    }
+    function escreverNome(Input, pontos, VerPos){
+        var tecla;
+        document.addEventListener("keydown",function(){
+            tecla = event.keyCode
+            if (acabouvidas){
+                if (tecla == 13 && arguments != null){
+                    Input.readOnly = true
+                    let Nome = Input.value
+                    if (VerPos == 1){
+                        localStorage.Nome1 = Nome
+                        localStorage.Pontos1 = pontos
+                    }else if (VerPos == 2){
+                        localStorage.Nome2 = Nome
+                        localStorage.Pontos2 = pontos
+                    }else if (VerPos == 3){
+                        localStorage.Nome3 = Nome
+                        localStorage.Pontos3 = pontos
+                    }
+                }
+                if (Mobile){
+                    obj.reiniciar.innerHTML = "Clique aqui p/reiniciar"
+                    obj.reiniciar.addEventListener("click", function(){
+                        Reiniciar()
+                    })
+                }    
+                if (tecla == 32 && !Mobile){
+                    Reiniciar()
+                }
+            }      
+        })
+    }
+    function escreverPontosJaSalvos(first, second, third){
+        if (localStorage.Pontos1){
+            first[0].value = localStorage.Nome1
+            first[1].innerHTML = localStorage.Pontos1 
+        }
+        if(localStorage.Pontos2){
+            second[0].value = localStorage.Nome2
+            second[1].innerHTML = localStorage.Pontos2
+        }
+        if(localStorage.Pontos3){
+            third[0].value = localStorage.Nome3
+            third[1].innerHTML = localStorage.Pontos3 
+        }
+    }
+    function PisacarCarro(){
+        if (identificarPiscada % 2 == 0){
+            carro.style.display ="none"
+        }else{
+            carro.style.display = "block"
+        }
+        identificarPiscada++
+    }
+    function mudarFrame(){
+       let Explosoes_Frames = ["url('https://uotzhw.dm.files.1drv.com/y4mCDf12mjWWp3uh5_BWENJDyqpdjeIjp1819dYwi6wLIBeWMNh7V94aXwAokd_CaDE3k5MROf2pR91BynE4_EQ4QrpilC0p6GFNeygQXut_xhRdJraMIlpTyycBUPN-iJDL4GacnhphaHOhrPYVWlV0u3GRO2EsMSYmzgep4frAMAi2INAOCEGjX9135eXX0Xat64cm2lRWwbrN8Z2lNwYlw?width=12&height=13&cropmode=none')", "url('https://uotyhw.dm.files.1drv.com/y4mwqVwJpuDLS_uR04U_kKv3IsgdwXQIH_3ojBeKBJR_hXy-eYL5t0my7iVQhcZR02MRufDs5748lrNT3paBMJgg5oL5QFlfLNBJMHvpQaGsVb8N18GxZYAGLsWAAaFDwJ3K0kMLlUmsYvvwWW2C6ONi6LtUBTs2dbHJN1JAGcdGk7DglObinz8WJklpJle7Enwq2Gyxf4uP4TvOMPPUUnLJQ?width=13&height=13&cropmode=none')", "url('https://uot1hw.dm.files.1drv.com/y4mwtHK7lQrWrmNlbod5SOpZDp4qfy3NcTYTjK0H9TkJoX6NdmMkaV3S5lm3usK5VteQfhEcxql9BW1bs978MR_mDwCIijobgs6NcOkj3lF3fREZ-wtFd2B4kS3hZMUP6GOohkRFzAB_8_QO5-Qo-kjzOS4vOHJ54C1hZHXC9ZD5tbTGKmHVc4oVLwPNa7F_gxc_ZCEEu61N0h0o_gfIN4R0w?width=12&height=15&cropmode=none')"]
+       obj.carro.style.backgroundImage = Explosoes_Frames[indica] 
+        indica++ 
+        if (indica == 3){
+            indica = 1
+        }
+    }
+    
+    function moverpista(){
+        py += vel
+        obj.pista.style.backgroundPositionY = py + "px"
+        if (py >= 820){
+            py = 0
+        }
+    }
+
+    function piscarLetra(){
+        if (!i){
+            obj.reiniciar.style.opacity = 0.4
+            i = true
+        }else{
+            obj.reiniciar.style.opacity = 1
+            i = false
+        }
+    }
+
+    function Reiniciar(){
+        acabouvidas = false
+        addEventos()
+        obj.reiniciar.style.opacity = 1
+        obj.highscores.style.display = "none"
+        clearInterval(Aperte_Espaco)
+        vidas = 3
+        identificarPiscada = 0
+        pontos = 0
+        for (let c = 0; c <= 3; c++){
+            var img = document.createElement("img")
+            var atributo = document.createAttribute("src")
+            var classe = document.createAttribute("class")
+            atributo.value = "https://uot0hw.dm.files.1drv.com/y4m7lE5NO7roECgP-fnXHohEsh6tEOMedWBQsIaxqLBRByCdq0aQRVtSRXraI-fel_eck9vrkB-c-4gtDynzqcR7flaMxN5jUkszcEtbrSySfu3HoSTw5WCnkaPjbhgE5T5L1eOOgHy_ImnzvqhyaHqRLwltjbnbVJCcs052pNj37q7i0lDZt05_ZMuXMwhsi98jyjUA8iqxMCcHFXHJTma9w?width=15&height=18&cropmode=none"
+            classe.value = "hearts"
+            img.setAttributeNode(atributo)
+            img.setAttributeNode(classe)
+            document.querySelector("#coracoes").appendChild(img)
+            obj.pontos.childNodes[c].src = "https://wouvtw.dm.files.1drv.com/y4mY7cIWBWztnfPZkkhgHwvlvUDcDOC4rVlO_8YKhoWypBszA461qPwYk3IAHv9QaMol23BorDmvTVDR3qas6bAKroo2afk7thjrT0ez40oGQKsu_a0H9yRio8x_mwjHSryJv77H_wDgGu_yrxRSONOXbLJko2ZGirNOW2xnZ9ZwfvdlpWcGo_kW_m3kO1fK3DFQ13RzNSb7IYqz1DBI2V4bQ?width=9&height=10&cropmode=none" 
+        }
+        obj.hearts = document.getElementsByClassName("hearts")
+        obj.pontos.style.display = "block"
+        resetarCarro()
+    }
+
+    function calcPontos(){
+    const numbers= [/*0*/"https://wouvtw.dm.files.1drv.com/y4mY7cIWBWztnfPZkkhgHwvlvUDcDOC4rVlO_8YKhoWypBszA461qPwYk3IAHv9QaMol23BorDmvTVDR3qas6bAKroo2afk7thjrT0ez40oGQKsu_a0H9yRio8x_mwjHSryJv77H_wDgGu_yrxRSONOXbLJko2ZGirNOW2xnZ9ZwfvdlpWcGo_kW_m3kO1fK3DFQ13RzNSb7IYqz1DBI2V4bQ?width=9&height=10&cropmode=none",/*1*/ "https://wouxtw.dm.files.1drv.com/y4mBS011tmG38_5X2E5sFOjliB8CAc3XWIyLhxk9duUluNTl2LiU4ki2Pg6WMCHoagZUQI-m-fDoXnatWEAckrWRWPwbMuE0aLURqY-rLXQfz4reOYouHME_PqVtA4jpe9cX9rK2embhPnaTsm4V4Cz_8Mv_0LlRk2moPBKk1Z8dgIHbCMXqVXlEw8o5r4wKX494PJoPfhIx4SAf9NaIANC-g?width=8&height=10&cropmode=none",/*2*/ "https://wouytw.dm.files.1drv.com/y4m19JdaVt7NhPH9yXwD2GLUO6MXAERIwUiH5_U_gZ9jRo7cejdjvqG28HYs2uPx3DHKQsSDWxzarcjRtaxUHpsl75w-1D9imV4POifCmxKHzwtdE--TrdibixrvuFqYkT7kZVPWXAqgj8vLLpkX907lAXyc44TKFoLrgq2yHbXQHySd9TGjlB0ux8S7ALdfLsHLCPGZZ53Qbxri0kFeqyvJA?width=9&height=9&cropmode=none", /*3*/ "https://woustw.dm.files.1drv.com/y4moPAOFx7e--4AOADX4ZHfe-egc5A9ehaIMESw9dzcZhaRhSS2cpbVhwVop5kkqyuGaMNKYINyyO2aJ3JOl9XaqY0KwYfD0UCTjEGbzCnLSsqhLTNQe03iGpiXT3Q4V2OSdZTtEu7n23gDcHXpcURhZyuW6t6EuTN8RGBYxkZcLf8bRJe_WQcL_bjWiWHN3rm_f8YgOTENnfzKHI2mcrZbog?width=9&height=10&cropmode=none", /*4*/ "https://wourtw.dm.files.1drv.com/y4mr2mNJIhMgU_fNuWi1aClqBGb7J1FajDSfAmlPDhdOZxxUMQ5zWRZX6wUxu1XyYO7rxQ4H51pMD56G40bNccoOPrrqfSK1Yv3A3ceATDOOW5Q4W-bP5d-_x_TExRESmg1mb4b3fIo0UFeJl4XlF9OQSXToqwr8teJd9INJB-P2-_eoVNsH4rwL-ZC_dLbSWDjFOzmSLQF2G1vRx5wCU3fBQ?width=9&height=10&cropmode=none", /*5*/ "https://vpu0tw.dm.files.1drv.com/y4m4h2dr4RqpBUa-BbbtbAH0nvI8THxG4LRLFrBJ8wCM80doz1NIGDcONM3p2TCpXKWxCWgyKSrwHp2r7jOOxjXJTT6iFZ63GiYwSfNiO5Oerkzw-ZTMRYbrIWt9weZ1Dqg_c-TPWUe5Xd-C5jRAd-tiCcgY6A16sKTUbkcW4w23ly41Jl-Vvenlk1_wZQirrf64_jrXucHJuKZfOpWG56NQw?width=9&height=9&cropmode=none", /*6*/ "https://vpuztw.dm.files.1drv.com/y4mcwzF9MU5Jc6A3BYwdtzAjW7CUnFy-xnSX2IeQAfXNrH5jgKDKNmuxI1Vo_OVtP_2Q0jIF5gxKdnod53GIWSqOeUNgxt4Y-_s7odFGayZX_snodD7UifK321zfsdnjErlzXXlkl1BmN9zJP5oTxVail0E0eON2ZfzR6f3SiPVqX_3OvVEeAu7DaYvQJCcvMPhQ3ZwxPzDT1RnRn7U_YP98w?width=9&height=10&cropmode=none", /*7*/ "https://vpu2tw.dm.files.1drv.com/y4m2G5g4FUUrXoFnFBXInzmisyuNnMaJJQ9msd1dQuk6H4Tmq8hCXf_kTN-CrGI2L1_Ewb-5CseskFQom_YbbcHvFOQng0wmYZaC9UW8petBQmmqS70zlE3Myfsf88i0dwbm4ZlaAcipwMUJhy0PCqN_a9yWi1C9YQd7Kk0fGSngcKgkG0ZMp7Ri69YSh7tEF6v-yrFZdR7onC6iA84Onbrww?width=9&height=10&cropmode=none", /*8*/ "https://vpu1tw.dm.files.1drv.com/y4m0wQ0KyjVFTha7ZTYvL78tZHB6uKmT7C1MXQgdh9EDpLqUuKQSlnoyu9hFmhc3rBtNdXsp3vU1AKnyolV95LoXGu70cdgRHQkGuf9vmZq3KPTQjRACdIKpzwPJ6iTXEEHKXYULpYhA1UWL-2gO4f0mVvmKJ9VMsfWw2XycL5tTQVsCZIObCPcV2QvCHrTR4TljShakMjKGQolk4U2XB7WOw?width=9&height=9&cropmode=none", /*9*/"https://vpuwtw.dm.files.1drv.com/y4mjGzTh4hKuye6Yy-JWx119Sm0UulJbe4A5c72qDdzRZc3bZ56nbX8UBjBjmcOlEP9agZv_jmQHrZy_DFq7jeNoKwLoy9uXnkmNdPyG1gjngzup1ncaBa48ElNKWu07DLgvXyjZX0CZ9CS8Wc38IeW1Z3jDDKamnc1NOyRlTWC5lHItC5427k7uu8oIqlVrSVLPEH3la5na26TJRbGN3v42A?width=9&height=9&cropmode=none"]
+    pontos += 0.2
+    if (Math.round(pontos) < 10){
+        obj.pontos.childNodes[3].src = numbers[Math.round(pontos)]
+    }else if (Math.round(pontos) < 100){
+        var decimal1 = (String(Math.round(pontos))).charAt(0)
+        var decimal2 = (String(Math.round(pontos))).charAt(1)
+        obj.pontos.childNodes[2].src = numbers[decimal1]
+        obj.pontos.childNodes[3].src = numbers[decimal2]
+    }else if (Math.round(pontos) < 1000){
+        decimal1 = (String(Math.round(pontos))).charAt(0)
+        decimal2 = (String(Math.round(pontos))).charAt(1)
+        var decimial3 = (String(Math.round(pontos))).charAt(2) 
+        obj.pontos.childNodes[1].src = numbers[decimal1]
+        obj.pontos.childNodes[2].src = numbers[decimal2]
+        obj.pontos.childNodes[3].src = numbers[decimial3]
+    }   
+}
+
+    function LoadConfigs(){
+        if (navigator.platform.match("arm")){
+            obj.instrucoes.innerHTML = "Cli&shy;que e se&shy;gu&shy;re pa&shy;ra o la&shy;do que vo&shy;çê quer que o car&shy;ro vá."
+            Mobile = true
+        }
+        var Posicoes = function(){
+            obj.highscores.hidden = true
+            obj.play.style.left = PosicoesObj.playBtn()
+            obj.pista.style.height = PosicoesObj.pistaH()
+            obj.pontos.style.left = PosicoesObj.pontosL()
+            obj.pontos.style.top = PosicoesObj.pontosT()
+            obj.carro.style.marginTop = PosicoesObj.carroMT()
+            obj.highscores.style.top = PosicoesObj.highscoresT()
+            obj.highscores.style.left = PosicoesObj.highscoresL()
+            obj.instrucoes.style.left = PosicoesObj.instrucoesL()
+        }
+        Posicoes()
+        for (c = 0; c < 4; c++){
+           obj.pontos.childNodes[c].src = "https://wouvtw.dm.files.1drv.com/y4mY7cIWBWztnfPZkkhgHwvlvUDcDOC4rVlO_8YKhoWypBszA461qPwYk3IAHv9QaMol23BorDmvTVDR3qas6bAKroo2afk7thjrT0ez40oGQKsu_a0H9yRio8x_mwjHSryJv77H_wDgGu_yrxRSONOXbLJko2ZGirNOW2xnZ9ZwfvdlpWcGo_kW_m3kO1fK3DFQ13RzNSb7IYqz1DBI2V4bQ?width=9&height=10&cropmode=none"
+        }
+        vidas = 3
+        pyInicaCarro = Number(PosicoesObj.carroMT().split("px")[0])
+        pyCarro = pyInicaCarro
+        addEventos()
+    }
+    window.addEventListener("load", LoadConfigs)
+</script>
+</html>
