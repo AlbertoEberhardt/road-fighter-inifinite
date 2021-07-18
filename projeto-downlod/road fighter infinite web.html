@@ -213,7 +213,6 @@
         instrucoesL: function(){
             return (PosicoesObj.playBtn().split("px")[0] - 78) + "px"
         }
-
     }
     var Mobile = false
     const Inimigos = ["url('https://tpt5hw.dm.files.1drv.com/y4mRllmdkBM38Nj9mcYVl9q0RC6KhdKELEMVBiADOWiDLnaqfechTogq7LS2MI2NmmhTIjiE60ow1s-XpVD7kpQbqcReWEycz8pXLMgb8uY2_gFN1B2wedb_A77pAEwloG8qmR5H3Wsspdiz5bC3WeT7qxn0FyM-wgVq9ijfqekDnXdpoyDyckO7xQamv5BpFIl7YIEsY_yFbDfC2QF3q3KPg?width=16&height=26&cropmode=none')", "url('https://tpt4hw.dm.files.1drv.com/y4meekdM2Pw43-DHtbgMvuZ4aFH1p3Zc1zgcLitN97R_xB3T6ymxGbgaa29P8Ux-SOsa4vGBS_OxizIYJ2jWzhbi1bUK3o-4Cw2o_r0TkecqOCC7bd-RE7eB0EX3BcLcc2WrVTHrQIaADjYWJ1cbtEJdpYamd2fwjWRo5txMmIOC9Bwo_IKsGOi-7Cyw9pshhj4EOs-q3AbTIN4OAfp_3kCKw?width=17&height=23&cropmode=none')", "url('https://tpt2hw.dm.files.1drv.com/y4mx6GQpq0cM7ibNCQpXtZO2s4FFtQoLJyNBlfQW5cAFFFYOtKqoE-M_uweB9i5pKpYPmvldi3FjhfOAMWQVTw2fo6Vr8J5gsHbkXs5rmgGH2LuvnX5m-C-8KVuZXbyDypnQ0qTM9SDxD_30dpRN-SGYtKgKExivOrvQpUg3PV0MjsDylhC9_OuUZ0z7A7FEit_q7v7T_udNVcASt6ls4_uMA?width=15&height=24&cropmode=none')", "url('https://vpustw.dm.files.1drv.com/y4mLCJPTR557_Xic7Lhnw3d-WjZHfyhcOmV2z3KK3v0wJ1Sl4yvQypOE6FHFm1fUGQOzpftoPJHqJeYmaf0bxtGSDDsj1xG3-NKa6wsRou5yv2dTIn-1Zk9hg8absIdXA3_bGty4Pn3pIeqPSKqpaQ-KnQpIf_7t8rsl3GISEXSODdx4VDAxDbpLim5b-oI36gU_ku3RKW66GvTYq-kEmEw1w?width=16&height=24&cropmode=none')", "url('https://vpurtw.dm.files.1drv.com/y4mDF0zEnQu1RyNe1Kj5ThpS-B29jM7-0GDuHVKeC0TZpeAcGKGc6sG4vFW301kO3Ir7XOMONrAHQImITu32BjQJ1b95eiI3BBP1MdugIV0dw6Y6UtLy9B98ff5hsG3PNahFRSH_9u9CfcV10GQT2kJ5vtmmEE7KWOkjJW8zYyp4M0gGxMH3m5Sml1F63z9CdMIrZpafmZqqpjFkLoG7oroCA?width=17&height=23&cropmode=none')", "url('https://vpuxtw.dm.files.1drv.com/y4msY41eqL-tXfjMXMfFY40oazA1nU4vkKTceTXY_ZxvON-DJ7K6YrfPMcUTUZotS4VeAtcC7TU6efZ4fVn_1QMWGTH6Rgp0WuZ2hhQ-sfz9RPGFEYzaylcYpgq32Eke97dGGOMRBcOYnd4eBO-qu5jDXq2HOxVtQi1kPIvfndW_6bo11smi3McZ2doDbH6nBO0yPyzUrX8e6XdBPK9Z_yN-Q?width=17&height=30&cropmode=none')", "url('https://vpuvtw.dm.files.1drv.com/y4mn0Ongnkgo31-uTfj7RP4LF_ah2cCGK656T33bg5Bq0VWemw5-yKJ7uBlgWA1jPPdMtHYTJg_c0CrcY8xtCX-wnjE8lpwJdokifP9x8A1MzZY_RnD6wwUJ5YFGWnIhOgw1hpPwxCx1Il8Oh33H3tx7IJFbtkzrVksSj9F0p5L0YhwkboZgF4MAQCV_EKeq3i6rtNRO1-kUzOHpMQOMmw4Lg?width=18&height=25&cropmode=none')", "url('https://vpuytw.dm.files.1drv.com/y4mDGV3XXMUy8Ccmvh7qhAWg0JmkJ_jOzwZjjAcI2-zaZ7OW2P4sTFXe7v2yOpuRlIQTbT1p_lPeMzyC5CEEXWTvcKaUTH3kbbQ4VQSca-VpyiufIQebrkWCNqYlmkfy0fFbtg8AN99V98buaJrmz5jrqemIYOuAZAmd5hxO-98GpGEj70pD_SuSztasBoA1DYz4q1dpEuxkqZqv8hQN78_Dw?width=15&height=24&cropmode=none')", "url('https://uot2hw.dm.files.1drv.com/y4m3NSLP7hd6lo6WxKH9zMd1ggX21FGEeSl6z6JMB4EbbnYTFuAxdBMl1KFSG7TV_8hBdfry7gpVP9LHpgahddcaTR8rnHURfNr9FWwAEDunS5OOkbXHNa-wxavXVjmx_vIczLuZ1T8qqXV5Bb_5SUjNzXenZkJrKzT0inE-UfO9cDVxc8BRa2tTIcSGXqpVfPE7n8m6fo7fMFxfCFaWVFPkA?width=22&height=50&cropmode=none')"]
@@ -222,10 +221,10 @@
     var pxIniCarro = 28.5, pyInicaCarro, pxCarro = pxIniCarro, pyCarro, dir = 0, py = 0;
     var game = false
     var l, h;
-    const segundos = 400
+    const milisegundos = 400
     var pontos = 0
     var interval_cria_inimigo;
-    var acabouvidas, Aperte_Espaco, todosEnimigos, animarExplosao, indica, removerExplosao, PiscarCarro;
+    var acabouvidas, Aperte_Espaco, todosInimigos, animarExplosao, indica, removerExplosao, PiscarCarro;
     var vidas;
     var identificarPiscada = 0, removerPiscada
     var i = false
@@ -233,7 +232,7 @@
     function addEventos(){
         if(obj.play){ // Só na primeira vez que inicia o jogo
             obj.play.addEventListener("click", function(){
-                interval_cria_inimigo = setInterval(criarInimigos, segundos)
+                interval_cria_inimigo = setInterval(criarInimigos, milisegundos)
                 obj.pontos.style.display = "block"
                 game = true
                 obj.instrucoes.remove()
@@ -305,40 +304,40 @@
             e.setAttributeNode(att2)
             e.setAttributeNode(att1)
             obj.pista.appendChild(e)
-            todosEnimigos = document.getElementsByClassName("inimigos")
+            todosInimigos = document.getElementsByClassName("inimigos")
         }    
     }
 
     function moverInimigos(){
-        if (todosEnimigos){
-            for (let c = 0; c < todosEnimigos.length; c++){
-                if (todosEnimigos[c]){
-                    var top = todosEnimigos[c].offsetTop
+        if (todosInimigos){
+            for (let c = 0; c < todosInimigos.length; c++){
+                if (todosInimigos[c]){
+                    var top = todosInimigos[c].offsetTop
                     top += velInimigos
-                    todosEnimigos[c].style.top = top + "px"
-                    colisao(todosEnimigos[c])
+                    todosInimigos[c].style.top = top + "px"
+                    colisao(todosInimigos[c])
                     if ((top > window.innerHeight) || (window.innerHeight <= 588 && top > 540 )){
-                        todosEnimigos[c].remove()
+                        todosInimigos[c].remove()
                     }
                 }
             }
         }
     }
 
-    function colisao(Enimigo){
-        let urlBackground = Enimigo.style.backgroundImage
+    function colisao(Inimigo){
+        let urlBackground = Inimigo.style.backgroundImage
         let formatarUrl = String(urlBackground)
         formatarUrl = String (formatarUrl.slice(38, 70))
         DefinirAlturaInimigo(formatarUrl)
-        AproximarInimigo(formatarUrl, Enimigo)
+        AproximarInimigo(formatarUrl, Inimigo)
         for (var c = 0; c < Inimigos.length; c++){
             if (Inimigos[c].match(formatarUrl)){
                l =  DefinirTamanhoInimigo(c)
             }
         }
-        var BackX = Enimigo.style.backgroundPositionX.split("px")
+        var BackX = Inimigo.style.backgroundPositionX.split("px")
         var EnemyBackgroundX = Number(BackX[0])
-        if(((Enimigo.offsetTop+h >= pyCarro && (Enimigo.offsetTop < pyCarro)) // frente enimigo e frente jogador
+        if(((Inimigo.offsetTop+h >= pyCarro && (Inimigo.offsetTop < pyCarro)) // frente Inimigo e frente jogador
         && ((EnemyBackgroundX + l >= pxCarro) && (EnemyBackgroundX <= pxCarro + 13)))){
             h = 0
             clearInterval(interval_cria_inimigo)
@@ -350,7 +349,7 @@
             game = false
             obj.hearts[vidas].remove()
             vidas--
-        }else if (Enimigo.offsetTop + h >= pyCarro && Enimigo.offsetTop + h < pyCarro + 26){
+        }else if (Inimigo.offsetTop + h >= pyCarro && Inimigo.offsetTop + h < pyCarro + 26){
             calcPontos()
         }
     }
@@ -395,10 +394,10 @@
     function Excluir_Explosao(){
         clearInterval(animarExplosao)
         clearInterval(removerExplosao)
-        todosEnimigos = document.getElementsByClassName("inimigos")
+        todosInimigos = document.getElementsByClassName("inimigos")
         do{
-            todosEnimigos[0].remove()
-        }while(todosEnimigos[0])
+            todosInimigos[0].remove()
+        }while(todosInimigos[0])
         resetarCarro()
     }
 
@@ -416,7 +415,7 @@
         if(vidas >= 0){
             game = true
             MainGame()
-            interval_cria_inimigo = setInterval(criarInimigos, segundos)
+            interval_cria_inimigo = setInterval(criarInimigos, milisegundos)
         }else{
             Aperte_Espaco = setInterval(piscarLetra, 200)
             acabouvidas = true
@@ -572,7 +571,6 @@
             i = false
         }
     }
-
     function Reiniciar(){
         acabouvidas = false
         addEventos()
