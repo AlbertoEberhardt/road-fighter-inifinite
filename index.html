@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Fighter</title>
+    <style>
+        body{
+            overflow: hidden;
+            background-color: black;
+        }
+        #pista{
+            width: 230px;
+            border:1px solid black;
+            margin: 0px auto 0px auto;
+            background-image: url("pista.png");
+        }
+        #carro{
+            z-index: 2;
+            width: 75px;
+            height: 28px;
+            margin-top: 200%;
+            margin-left: 72px;
+            background-image: url("carroJog.jpg");
+            background-repeat: no-repeat;
+            background-position-x: 28.5px;
+        }
+        .inimigos{
+            z-index: 1;
+            width: 75px;
+            height: 50px; 
+            position: absolute;
+            top: 0px;
+            margin-left: 72px;
+        }
+        #pontos{
+            position: absolute;
+            top: 200px;
+            left: 738px;
+            width: 52px;
+            height: 40px;
+            background-color: rgb(64, 0, 128);
+            padding-left: 1px;
+            display: none;
+        }
+        #pontos img{
+            display: inline-block;
+            width: 12px;
+            height: 14px;
+            margin-top: 2px;
+        }
+        #pontos div{
+            margin-left: 0px;
+        }
+        #highscores{
+            position: fixed;
+            top: 220px;
+            left: 600px;
+            width: 160px;
+            height: 150px;
+            background-color: black;
+            color: white;
+        }
+        #highscores table{
+            margin: 20px auto auto auto;
+        }
+        #highscores td{
+            padding-bottom: 1px;
+        }
+        #highscores input{
+            text-align: center;
+            background-color: black;
+            color: white;
+            border: none;
+        }
+        #highscores input:focus{
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+        #highscores table caption{
+            margin-top:-3px;
+            margin-bottom: 3px;
+        }
+        #highscores table p{
+            margin-top: -1px;
+            margin-bottom: 2px;
+        }
+        #reiniciar{
+            margin-top: 0px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #instrucoes{
+            width: 230px;
+            height: 40px;
+            position: fixed;
+            top: 260px;
+            left: 568px;
+            background-color: black;
+            color: white;
+            font-family: Arial;
+            font-size: 11pt;
+            text-align: justify;
+            z-index: 20;
+        }
+        button{
+            width: 60px;
+            position: absolute;
+            top: 300px;
+            left: 646px;
+            border: none;
+            color: white;
+            background-color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <span id="instrucoes">Aperte seta di&shy;rei&shy;ta ou se&shy;ta es&shy;quer&shy;da para mo&shy;ver o carro.</span>
+    <button id="button">Jogar</button>
+    <div id="pista">
+       <div id="carro"></div>
+    </div>
+    <div id="pontos"><img><img><img><img><div id="coracoes"><img class="hearts" src="hearts.png"><img class="hearts" src="hearts.png"><img class="hearts" src="hearts.png"><img class="hearts" src="hearts.png"></div></div>
+    <div id="highscores">
+        <table>
+            <caption> Highscores</caption>
+        <tr>
+            <td><input type="text" maxlength="8" size="5" placeholder="Seu nome" class="primeiro"></td>
+            <td class="tdp"><p>------</p></td>
+            <td><p class="primeiro">0000</p></td>
+        </tr>
+        <tr>
+            <td><input type="text" maxlength="8" size="5" placeholder="Seu nome" class="segundo"></td>
+            <td class="tdp"><p>------</p></td>
+            <td><p class="segundo">0000</p></td>
+        </tr>
+        <tr>
+            <td><input type="text" maxlength="8" size="5" placeholder="Seu nome" class="terceiro"></td>
+            <td class="tdp"><p>------</p></td>
+            <td><p class="terceiro">0000</p></td>
+        </tr>
+        </table>
+        <p id="reiniciar">Aperte espaço p/reiniciar</p>
+    </div>
+    
+</body>
+<script>
+    var obj = {
+        pontos : document.querySelector("#pontos"),
+        highscores : document.querySelector("#highscores"),
+        pista : document.querySelector("#pista"),
+        carro : document.querySelector("#carro"),
+        hearts : document.getElementsByClassName("hearts"),
+        reiniciar : document.querySelector("#reiniciar"),
+        play : document.querySelector("#button"),
+        instrucoes : document.querySelector("#instrucoes")
+    }
+    var PosicoesObj = {
+        pistaH : function(){
+            return (window.innerHeight-20) + "px"
+        },
+        pontosL : function(){
+            return (((window.innerWidth - 230)/2) + (230/2) + 52) + "px"
+        },
+        pontosT : function(){
+            return window.innerHeight/3.3 + 'px'
+        },
+        carroMT : function(){
+            return window.innerHeight/1.425 + "px"
+        },
+        highscoresT : function(){
+            return (window.innerHeight/3.3)-10 + "px"
+        },
+        highscoresL : function(){
+            return (((window.innerWidth - 230)/2) + (230/2) - 75) + "px"
+        },
+        playBtn: function(){
+            return (obj.pista.offsetLeft + 230/2 - 36) + "px"
+        },
+        instrucoesL: function(){
+            return (PosicoesObj.playBtn().split("px")[0] - 78) + "px"
+        }
+    }
+    const Inimigos = ["url('redNormal.png')", "url('redMaior.png')", "url('redFerrari.png')", "url('azulNormal.png')", "url('azulMaior.png')", "url('amareloNormal.png')", "url('amareloMaior.png')", "url('amareloFerrari.png')", "url('caminhao.png')"]
+    const vel = 3.5, velInimigos = 5, velCarro = 2;
+    var frames;
+    var pxIniCarro = 28.5, pyInicaCarro, pxCarro = pxIniCarro, pyCarro, dir = 0, py = 0;
+    var game = false
+    var l, h;
+    const milisegundos = 400
+    var pontos = 0
+    var interval_cria_inimigo;
+    var acabouvidas, Aperte_Espaco, todosInimigos, animarExplosao, indica, removerExplosao, PiscarCarro;
+    var vidas;
+    var identificarPiscada = 0, removerPiscada
+    
+    function addEventos(){
+        if(obj.play){ // Só é chamada primeira vez que inicia o jogo
+            obj.play.addEventListener("click", function(){
+                interval_cria_inimigo = setInterval(criarInimigos, milisegundos)
+                obj.pontos.style.display = "block"
+                game = true
+                obj.instrucoes.remove()
+                delete obj.instrucoes
+                obj.play.remove()
+                delete obj.play
+                MainGame()
+            })
+        }
+        document.addEventListener("keydown", teclaDW)
+        document.addEventListener("keyup", teclaUP)
+    }
+
+    function teclaDW(){
+        if (event.keyCode == 37){
+            dir = -1
+        }
+        if (event.keyCode == 39){
+            dir = 1
+        }
+    }
+    function teclaUP(){
+        if (event.keyCode == 37 || event.keyCode == 39){
+            dir = 0
+        }
+    }
+    function moverCarro(){
+        pxCarro += velCarro*dir
+        if(pxCarro < 0 || pxCarro > 60){
+            pxCarro += velCarro*dir*-1
+        }
+        obj.carro.style.backgroundPosition = pxCarro + "px"
+    }
+    function MainGame(){
+        if (document.hasFocus()){
+            moverpista()
+            moverCarro()
+            moverInimigos()
+        }
+        if(game){
+        frames = requestAnimationFrame(MainGame)
+        }
+    }
+    function criarInimigos(){
+        if (document.hasFocus()){
+            const e = document.createElement("div")
+            const att1 = document.createAttribute("class")
+            const att2 = document.createAttribute("style")
+            att1.value = "inimigos"
+            let sortInimigo = Math.round(Math.random()*(Inimigos.length-1))
+            let tamanhoVeiculo = DefinirTamanhoInimigo(sortInimigo) 
+            let sortPx = Math.round(Math.random()*(71-tamanhoVeiculo))
+            att2.value = "background-image:" + Inimigos[sortInimigo] + "; background-repeat: no-repeat; background-position:" + sortPx + "px;"
+            e.setAttributeNode(att2)
+            e.setAttributeNode(att1)
+            obj.pista.appendChild(e)
+            todosInimigos= document.getElementsByClassName("inimigos")
+        }    
+    }
+
+    function DefinirTamanhoInimigo(NumEnemy){
+        if (NumEnemy == 6){ // Amarelo Maior
+            return 12
+        }else if (NumEnemy == (8)){// caminhao
+            return 16
+        }else{
+            return 11
+        }
+    }
+    function moverInimigos(){
+        if (todosInimigos){
+            for (let c = 0; c < todosInimigos.length; c++){
+                if (todosInimigos[c]){
+                    var top = todosInimigos[c].offsetTop
+                    top += velInimigos
+                    todosInimigos[c].style.top = top + "px"
+                    colisao(todosInimigos[c])
+                    if (top > window.innerHeight){
+                        todosInimigos[c].remove()
+                    }
+                }
+            }
+        }
+    }
+
+    function colisao(Inimigo){
+        let urlBackground = Inimigo.style.backgroundImage
+        DefinirAlturaInimigo(urlBackground)
+        let formatarUrl = String(urlBackground.split(")"))
+        formatarUrl= formatarUrl.split("(")
+        formatarUrl = formatarUrl[1].replace("\"\"", "\'\'")
+        AproximarInimigo(formatarUrl, Inimigo)
+        for (var c = 0; c < Inimigos.length; c++){
+            if (Inimigos[c].match(formatarUrl[1])){
+               l =  DefinirTamanhoInimigo(c)
+            }
+        }
+        var BackX = Inimigo.style.backgroundPositionX.split("px")
+        var EnemyBackgroundX = Number(BackX[0])
+        if(((Inimigo.offsetTop+h >= pyCarro && (Inimigo.offsetTop < pyCarro)) // frente inimigo e frente jogador
+        && ((EnemyBackgroundX + l >= pxCarro) && (EnemyBackgroundX <= pxCarro + 13)))){
+            h = 0
+            clearInterval(interval_cria_inimigo)
+            indica = 2
+            carro.style.zIndex = 10
+            carro.style.backgroundImage = "url('explosao1.png')"
+            animarExplosao = setInterval(mudarFrame, 200 )
+            removerExplosao = setInterval(Excluir_Explosao, 1000)
+            game = false
+            obj.hearts[vidas].remove()
+            vidas--
+        }else if (Inimigo.offsetTop + h >= pyCarro && Inimigo.offsetTop + h < pyCarro + 26){
+            calcPontos()
+        }
+    }
+
+    function DefinirAlturaInimigo(url){
+        if (url.match("amareloFerrari") || url.match("azulNormal") || url.match("redFerrari")){
+            h = 25
+        }else if (url.match("redMaior") || url.match("azulMaior")){
+            h = 27
+        }else if (url.match("redNormal") || url.match("amareloMaior")){
+            h = 26
+        }else if (url.match("amareloNormal")){
+            h = 31
+        }else if (url.match("caminhao")){
+            h = 50
+        }
+    }
+
+    function AproximarInimigo(urlInimigo, Inimigo){
+        let pxInimigo;
+        if(urlInimigo.match("azul") && (pyCarro - (Inimigo.offsetTop + h) <= 200) && (pyCarro - (Inimigo.offsetTop + h) >= 100)){
+            pxInimigo = (Inimigo.style.backgroundPositionX.split("px"))
+            if (pxCarro > pxInimigo[0]){
+                pxInimigo[0] ++
+            }else if (pxCarro  < pxInimigo[0]){
+                pxInimigo[0] --
+            }
+            Inimigo.style.backgroundPositionX = pxInimigo[0] + "px"
+        }
+    }
+
+    function Excluir_Explosao(){
+        clearInterval(animarExplosao)
+        clearInterval(removerExplosao)
+        todosInimigos= document.getElementsByClassName("inimigos")
+        do{
+            todosInimigos[0].remove()
+        }while(todosInimigos[0])
+        resetarCarro()
+    }
+
+    function resetarCarro(){
+        pxCarro = pxIniCarro
+        obj.carro.style.backgroundImage = "url('carroJog.jpg')"
+        obj.carro.style.backgroundPositionX = pxIniCarro + "px"
+        PiscarCarro = setInterval(PisacarCarro, 200)
+        removerPiscada = setInterval(RetomarGame, 1200)
+    }
+    function RetomarGame(){
+        clearInterval(PiscarCarro)
+        clearInterval(removerPiscada)
+        obj.carro.style.display = "block"
+        if(vidas >= 0){
+            game = true
+            MainGame()
+            interval_cria_inimigo = setInterval(criarInimigos, milisegundos)
+        }else{
+            Aperte_Espaco = setInterval(piscarLetra, 200)
+            acabouvidas = true
+            obj.pontos.style.display = "none"
+            VerificarHighscores()
+            obj.highscores.hidden = true
+        }   
+
+    }
+
+    function VerificarHighscores(){
+        var PtsTotal = Math.round(pontos)
+        var primeiro = document.getElementsByClassName("primeiro") // 0 é o input -- 1 o valor
+        var segundo = document.getElementsByClassName("segundo")
+        var terceiro = document.getElementsByClassName("terceiro")
+        var posiçao;
+        escreverPontosJaSalvos(primeiro, segundo, terceiro)
+        var valor1 = Number(primeiro[1].innerHTML)
+        var valor2 = Number(segundo[1].innerHTML)
+        var valor3 = Number(terceiro[1].innerHTML)
+        obj.highscores.style.display = "block"
+        if(PtsTotal > valor1){
+            primeiro[0].focus()
+            primeiro[0].value = ""
+            primeiro[0].readOnly = false
+            segundo[0].readOnly = true
+            terceiro[0].readOnly = true
+            posiçao = 1
+            primeiro[0].addEventListener("change", function(){escreverNome(primeiro[0], PtsTotal, posiçao)})
+            if (localStorage.Nome2){
+                terceiro[0].value = localStorage.Nome2
+                localStorage.Pontos3 = localStorage.Pontos2
+                localStorage.Nome3 = localStorage.Nome2 
+            }
+            if(localStorage.Nome1){
+                segundo[0].value = localStorage.Nome1
+                localStorage.Nome2 = localStorage.Nome1
+                localStorage.Pontos2 = localStorage.Pontos1
+            }
+            terceiro[1].innerHTML = valor2
+            segundo[1].innerHTML = valor1
+            primeiro[1].innerHTML = PtsTotal
+            valor3 = valor2
+            valor2 = valor1
+            valor1 = PtsTotal
+        }else if (PtsTotal > valor2){
+            segundo[0].focus()
+            segundo[0].value = ""
+            segundo[0].readOnly = false
+            primeiro[0].readOnly = true
+            terceiro[0].readOnly = true
+            posiçao = 2
+            segundo[0].addEventListener("change", function(){escreverNome(segundo[0], PtsTotal, posiçao)})
+            if (localStorage.Nome2){
+                terceiro[0].value = localStorage.Nome2
+                localStorage.Pontos3 = localStorage.Pontos2
+                localStorage.Nome3 = localStorage.Nome2
+            }
+            terceiro[1].innerHTML = valor2
+            segundo[1].innerHTML = PtsTotal
+            valor3 = valor2
+            valor2 = PtsTotal
+        }else if (PtsTotal > valor3){
+            terceiro[0].focus()
+            terceiro[0].value = ""
+            segundo[0].readOnly = true
+            primeiro[0].readOnly = true
+            terceiro[0].readOnly = false
+            posiçao = 3
+            terceiro[0].addEventListener("change",function(){escreverNome(terceiro[0], PtsTotal, posiçao)})
+            terceiro[1].innerHTML = PtsTotal
+            valor3 = PtsTotal
+        }else{
+            escreverNome(null, null, null)
+        }
+    }
+    function escreverNome(Input, pontos, VerPos){
+        var tecla;
+        document.addEventListener("keydown",function(){tecla = event.keyCode
+            if (acabouvidas){
+                if (tecla == 13 && arguments != null){
+                    Input.readOnly = true
+                    let Nome = Input.value
+                    if (VerPos == 1){
+                        localStorage.Nome1 = Nome
+                        localStorage.Pontos1 = pontos
+                    }else if (VerPos == 2){
+                        localStorage.Nome2 = Nome
+                        localStorage.Pontos2 = pontos
+                    }else if (VerPos == 3){
+                        localStorage.Nome3 = Nome
+                        localStorage.Pontos3 = pontos
+                    }
+                }
+                if (tecla == 32){
+                    Reiniciar()
+                }
+            }    
+        })
+    }
+    function escreverPontosJaSalvos(first, second, third){
+        if (localStorage.Pontos1){
+            first[0].value = localStorage.Nome1
+            first[1].innerHTML = localStorage.Pontos1 
+        }
+        if(localStorage.Pontos2){
+            second[0].value = localStorage.Nome2
+            second[1].innerHTML = localStorage.Pontos2
+        }
+        if(localStorage.Pontos3){
+            third[0].value = localStorage.Nome3
+            third[1].innerHTML = localStorage.Pontos3 
+        }
+    }
+    function PisacarCarro(){
+        if (identificarPiscada % 2 == 0){
+            carro.style.display ="none"
+        }else{
+            carro.style.display = "block"
+        }
+        identificarPiscada++
+    }
+    function mudarFrame(){
+       let Explosoes_Frames = ["url('explosao1.png')", "url('explosao2.png')", "url('explosao3.png')"]
+       obj.carro.style.backgroundImage = Explosoes_Frames[indica] 
+        indica++ 
+        if (indica == 3){
+            indica = 1
+        }
+    }
+    
+    function moverpista(){
+        py += vel
+        obj.pista.style.backgroundPositionY = py + "px"
+        if (py >= 820){
+            py = 0
+        }
+    }
+
+    var i = false
+    function piscarLetra(){
+        if (!i){
+            obj.reiniciar.style.opacity = 0.4
+            i = true
+        }else{
+            obj.reiniciar.style.opacity = 1
+            i = false
+        }
+    }
+
+    function Reiniciar(){
+        acabouvidas = false
+        addEventos()
+        obj.reiniciar.style.opacity = 1
+        obj.highscores.style.display = "none"
+        clearInterval(Aperte_Espaco)
+        vidas = 3
+        identificarPiscada = 0
+        pontos = 0
+        for (let c = 0; c <= 3; c++){
+            var img = document.createElement("img")
+            var atributo = document.createAttribute("src")
+            var classe = document.createAttribute("class")
+            atributo.value = "hearts.png"
+            classe.value = "hearts"
+            img.setAttributeNode(atributo)
+            img.setAttributeNode(classe)
+            document.querySelector("#coracoes").appendChild(img)
+            obj.pontos.childNodes[c].src = "0.png" 
+        }
+        obj.hearts = document.getElementsByClassName("hearts")
+        obj.pontos.style.display = "block"
+        resetarCarro()
+    }
+
+    function calcPontos(){
+    pontos += 0.2
+    if (Math.round(pontos) < 10){
+        obj.pontos.childNodes[3].src = Math.round(pontos) + ".png"
+    }else if (Math.round(pontos) < 100){
+        var decimal1 = (String(Math.round(pontos))).charAt(0)
+        var decimal2 = (String(Math.round(pontos))).charAt(1)
+        obj.pontos.childNodes[2].src = decimal1 + ".png"
+        obj.pontos.childNodes[3].src = decimal2 + ".png"
+    }else if (Math.round(pontos) < 1000){
+        decimal1 = (String(Math.round(pontos))).charAt(0)
+        decimal2 = (String(Math.round(pontos))).charAt(1)
+        var decimial3 = (String(Math.round(pontos))).charAt(2) 
+        obj.pontos.childNodes[1].src = decimal1 + ".png"
+        obj.pontos.childNodes[2].src = decimal2 + ".png"
+        obj.pontos.childNodes[3].src = decimal2 + ".png"
+    }   
+}
+
+    function definirTamanho_Pista(){
+        var Posicoes = function(){
+            obj.play.style.left = PosicoesObj.playBtn()
+            obj.instrucoes.style.left = PosicoesObj.instrucoesL()
+            obj.highscores.hidden = true
+            obj.pista.style.height = PosicoesObj.pistaH()
+            obj.pontos.style.left = PosicoesObj.pontosL()
+            obj.pontos.style.top = PosicoesObj.pontosT()
+            obj.carro.style.marginTop = PosicoesObj.carroMT()
+            obj.highscores.style.top = PosicoesObj.highscoresT()
+            obj.highscores.style.left = PosicoesObj.highscoresL()
+        }
+        Posicoes()
+        for (c = 0; c < 4; c++){
+           obj.pontos.childNodes[c].src = "0.png"
+        }
+        vidas = 3
+        pyInicaCarro = Number(PosicoesObj.carroMT().split("px")[0])
+        pyCarro = pyInicaCarro
+        addEventos()
+    }
+    window.addEventListener("load", definirTamanho_Pista)
+</script>
+</html>
